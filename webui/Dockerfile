@@ -12,15 +12,15 @@ ARG DEBUG_TOOLS
 RUN if [ "$DEBUG_TOOLS" = "true" ] ; then apt-get update && apt-get install -y vim strace net-tools curl netcat-openbsd ; fi
 
 # Set working dir
-WORKDIR /free5gc
+WORKDIR /free5gc-5g-relays
 RUN mkdir -p config/ public/
 
 # Copy executable, frontend static files and default configuration
-COPY --from=builder /free5gc/${F5GC_MODULE} ./
-COPY --from=builder /free5gc/public ./public
+COPY --from=builder /free5gc-5g-relays/${F5GC_MODULE} ./
+COPY --from=builder /free5gc-5g-relays/public ./public
 
 # Config files volume
-VOLUME [ "/free5gc/config" ]
+VOLUME [ "/free5gc-5g-relays/config" ]
 
 # WebUI uses the port 5000
 EXPOSE 5000
