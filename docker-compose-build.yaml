@@ -9,8 +9,8 @@ services:
         DEBUG_TOOLS: "false"
     command: bash -c "./upf-iptables.sh && ./upf -c ./config/upfcfg.yaml"
     volumes:
-      - ./config/upfcfg.yaml:/free5gc/config/upfcfg.yaml
-      - ./config/upf-iptables.sh:/free5gc/upf-iptables.sh
+      - ./config/upfcfg.yaml:/free5gc-5g-relays/config/upfcfg.yaml
+      - ./config/upf-iptables.sh:/free5gc-5g-relays/upf-iptables.sh
     cap_add:
       - NET_ADMIN
     networks:
@@ -41,10 +41,10 @@ services:
     expose:
       - "8000"
     volumes:
-      - ./config/nrfcfg.yaml:/free5gc/config/nrfcfg.yaml
-      - ./cert:/free5gc/cert
+      - ./config/nrfcfg.yaml:/free5gc-5g-relays/config/nrfcfg.yaml
+      - ./cert:/free5gc-5g-relays/cert
     environment:
-      DB_URI: mongodb://db/free5gc
+      DB_URI: mongodb://db/free5gc-5g-relays
       GIN_MODE: release
     networks:
       privnet:
@@ -63,8 +63,8 @@ services:
     expose:
       - "8000"
     volumes:
-      - ./config/amfcfg.yaml:/free5gc/config/amfcfg.yaml
-      - ./cert:/free5gc/cert
+      - ./config/amfcfg.yaml:/free5gc-5g-relays/config/amfcfg.yaml
+      - ./cert:/free5gc-5g-relays/cert
     environment:
       GIN_MODE: release
     networks:
@@ -85,8 +85,8 @@ services:
     expose:
       - "8000"
     volumes:
-      - ./config/ausfcfg.yaml:/free5gc/config/ausfcfg.yaml
-      - ./cert:/free5gc/cert
+      - ./config/ausfcfg.yaml:/free5gc-5g-relays/config/ausfcfg.yaml
+      - ./cert:/free5gc-5g-relays/cert
     environment:
       GIN_MODE: release
     networks:
@@ -106,8 +106,8 @@ services:
     expose:
       - "8000"
     volumes:
-      - ./config/nssfcfg.yaml:/free5gc/config/nssfcfg.yaml
-      - ./cert:/free5gc/cert
+      - ./config/nssfcfg.yaml:/free5gc-5g-relays/config/nssfcfg.yaml
+      - ./cert:/free5gc-5g-relays/cert
     environment:
       GIN_MODE: release
     networks:
@@ -127,8 +127,8 @@ services:
     expose:
       - "8000"
     volumes:
-      - ./config/pcfcfg.yaml:/free5gc/config/pcfcfg.yaml
-      - ./cert:/free5gc/cert
+      - ./config/pcfcfg.yaml:/free5gc-5g-relays/config/pcfcfg.yaml
+      - ./cert:/free5gc-5g-relays/cert
     environment:
       GIN_MODE: release
     networks:
@@ -148,9 +148,9 @@ services:
     expose:
       - "8000"
     volumes:
-      - ./config/smfcfg.yaml:/free5gc/config/smfcfg.yaml
-      - ./config/uerouting.yaml:/free5gc/config/uerouting.yaml
-      - ./cert:/free5gc/cert
+      - ./config/smfcfg.yaml:/free5gc-5g-relays/config/smfcfg.yaml
+      - ./config/uerouting.yaml:/free5gc-5g-relays/config/uerouting.yaml
+      - ./cert:/free5gc-5g-relays/cert
     environment:
       GIN_MODE: release
     networks:
@@ -171,8 +171,8 @@ services:
     expose:
       - "8000"
     volumes:
-      - ./config/udmcfg.yaml:/free5gc/config/udmcfg.yaml
-      - ./cert:/free5gc/cert
+      - ./config/udmcfg.yaml:/free5gc-5g-relays/config/udmcfg.yaml
+      - ./cert:/free5gc-5g-relays/cert
     environment:
       GIN_MODE: release
     networks:
@@ -193,10 +193,10 @@ services:
     expose:
       - "8000"
     volumes:
-      - ./config/udrcfg.yaml:/free5gc/config/udrcfg.yaml
-      - ./cert:/free5gc/cert
+      - ./config/udrcfg.yaml:/free5gc-5g-relays/config/udrcfg.yaml
+      - ./cert:/free5gc-5g-relays/cert
     environment:
-      DB_URI: mongodb://db/free5gc
+      DB_URI: mongodb://db/free5gc-5g-relays
       GIN_MODE: release
     networks:
       privnet:
@@ -217,10 +217,10 @@ services:
       - "8000"
       - "2122"
     volumes:
-      - ./config/chfcfg.yaml:/free5gc/config/chfcfg.yaml
-      - ./cert:/free5gc/cert
+      - ./config/chfcfg.yaml:/free5gc-5g-relays/config/chfcfg.yaml
+      - ./cert:/free5gc-5g-relays/cert
     environment:
-      DB_URI: mongodb://db/free5gc
+      DB_URI: mongodb://db/free5gc-5g-relays
       GIN_MODE: release
     networks:
       privnet:
@@ -239,8 +239,8 @@ services:
         DEBUG_TOOLS: "false"
     command: sh -c "./n3iwf-ipsec.sh && ./n3iwf -c ./config/n3iwfcfg.yaml"
     volumes:
-      - ./config/n3iwfcfg.yaml:/free5gc/config/n3iwfcfg.yaml
-      - ./config/n3iwf-ipsec.sh:/free5gc/n3iwf-ipsec.sh
+      - ./config/n3iwfcfg.yaml:/free5gc-5g-relays/config/n3iwfcfg.yaml
+      - ./config/n3iwf-ipsec.sh:/free5gc-5g-relays/n3iwf-ipsec.sh
     environment:
       GIN_MODE: release
     cap_add:
@@ -263,8 +263,8 @@ services:
         DEBUG_TOOLS: "false"
     command: ./tngf -c ./config/tngfcfg.yaml
     volumes:
-      - ./config/tngfcfg.yaml:/free5gc/config/tngfcfg.yaml
-      - ./cert:/free5gc/cert
+      - ./config/tngfcfg.yaml:/free5gc-5g-relays/config/tngfcfg.yaml
+      - ./cert:/free5gc-5g-relays/cert
     environment:
       GIN_MODE: release
     cap_add:
@@ -285,7 +285,7 @@ services:
     expose:
       - "2121"
     volumes:
-      - ./config/webuicfg.yaml:/free5gc/config/webuicfg.yaml
+      - ./config/webuicfg.yaml:/free5gc-5g-relays/config/webuicfg.yaml
     environment:
       - GIN_MODE=release
     networks:

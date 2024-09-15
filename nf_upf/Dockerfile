@@ -23,12 +23,12 @@ RUN apt-get update \
     && apt-get clean
 
 # Set working dir
-WORKDIR /free5gc
+WORKDIR /free5gc-5g-relays
 RUN mkdir -p config/ log/
 
 # Copy executable
-COPY --from=builder /free5gc/${F5GC_MODULE} ./
+COPY --from=builder /free5gc-5g-relays/${F5GC_MODULE} ./
 COPY --from=my-base /go/gtp5g-tunnel ./gtp5g-tunnel
 
 # Config files volume
-VOLUME [ "/free5gc/config" ]
+VOLUME [ "/free5gc-5g-relays/config" ]

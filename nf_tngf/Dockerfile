@@ -11,16 +11,16 @@ ARG DEBUG_TOOLS
 RUN if [ "$DEBUG_TOOLS" = "true" ] ; then apk add -U vim strace net-tools curl netcat-openbsd ; fi
 
 # Set working dir
-WORKDIR /free5gc
+WORKDIR /free5gc-5g-relays
 RUN mkdir -p config/ log/ cert/
 
 # Copy executable and default certs
-COPY --from=builder /free5gc/${F5GC_MODULE} ./
-COPY --from=builder /free5gc/cert/${F5GC_MODULE}.pem ./cert/
-COPY --from=builder /free5gc/cert/${F5GC_MODULE}.key ./cert/
+COPY --from=builder /free5gc-5g-relays/${F5GC_MODULE} ./
+COPY --from=builder /free5gc-5g-relays/cert/${F5GC_MODULE}.pem ./cert/
+COPY --from=builder /free5gc-5g-relays/cert/${F5GC_MODULE}.key ./cert/
 
 # Config files volume
-VOLUME [ "/free5gc/config" ]
+VOLUME [ "/free5gc-5g-relays/config" ]
 
 # Certificates (if not using default) volume
 VOLUME [ "/free5gc/cert" ]
