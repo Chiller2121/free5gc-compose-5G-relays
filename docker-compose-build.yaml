@@ -231,49 +231,49 @@ services:
       - free5gc-nrf
       - free5gc-webui
 
-  free5gc-n3iwf:
-    container_name: n3iwf
-    build:
-      context: ./nf_n3iwf
-      args:
-        DEBUG_TOOLS: "false"
-    command: sh -c "./n3iwf-ipsec.sh && ./n3iwf -c ./config/n3iwfcfg.yaml"
-    volumes:
-      - ./config/n3iwfcfg.yaml:/free5gc-5g-relays/config/n3iwfcfg.yaml
-      - ./config/n3iwf-ipsec.sh:/free5gc-5g-relays/n3iwf-ipsec.sh
-    environment:
-      GIN_MODE: release
-    cap_add:
-      - NET_ADMIN
-    networks:
-      privnet:
-        ipv4_address: 10.100.200.15
-        aliases:
-          - n3iwf.free5gc.org
-    depends_on:
-      - free5gc-amf
-      - free5gc-smf
-      - free5gc-upf
+  # free5gc-n3iwf:
+  #   container_name: n3iwf
+  #   build:
+  #     context: ./nf_n3iwf
+  #     args:
+  #       DEBUG_TOOLS: "false"
+  #   command: sh -c "./n3iwf-ipsec.sh && ./n3iwf -c ./config/n3iwfcfg.yaml"
+  #   volumes:
+  #     - ./config/n3iwfcfg.yaml:/free5gc-5g-relays/config/n3iwfcfg.yaml
+  #     - ./config/n3iwf-ipsec.sh:/free5gc-5g-relays/n3iwf-ipsec.sh
+  #   environment:
+  #     GIN_MODE: release
+  #   cap_add:
+  #     - NET_ADMIN
+  #   networks:
+  #     privnet:
+  #       ipv4_address: 10.100.200.15
+  #       aliases:
+  #         - n3iwf.free5gc.org
+  #   depends_on:
+  #     - free5gc-amf
+  #     - free5gc-smf
+  #     - free5gc-upf
 
-  free5gc-tngf:
-    container_name: tngf
-    build:
-      context: ./nf_tngf
-      args:
-        DEBUG_TOOLS: "false"
-    command: ./tngf -c ./config/tngfcfg.yaml
-    volumes:
-      - ./config/tngfcfg.yaml:/free5gc-5g-relays/config/tngfcfg.yaml
-      - ./cert:/free5gc-5g-relays/cert
-    environment:
-      GIN_MODE: release
-    cap_add:
-      - NET_ADMIN
-    network_mode: host
-    depends_on:
-      - free5gc-amf
-      - free5gc-smf
-      - free5gc-upf
+  # free5gc-tngf:
+  #   container_name: tngf
+  #   build:
+  #     context: ./nf_tngf
+  #     args:
+  #       DEBUG_TOOLS: "false"
+  #   command: ./tngf -c ./config/tngfcfg.yaml
+  #   volumes:
+  #     - ./config/tngfcfg.yaml:/free5gc-5g-relays/config/tngfcfg.yaml
+  #     - ./cert:/free5gc-5g-relays/cert
+  #   environment:
+  #     GIN_MODE: release
+  #   cap_add:
+  #     - NET_ADMIN
+  #   network_mode: host
+  #   depends_on:
+  #     - free5gc-amf
+  #     - free5gc-smf
+  #     - free5gc-upf
 
   free5gc-webui:
     container_name: webui
@@ -298,14 +298,13 @@ services:
       - db
       - free5gc-nrf
 
-  ueransim:
-    container_name: ueransim
+  gnb:
+    container_name: gnb
     build:
       context: ./ueransim
     command: ./nr-gnb -c ./config/gnbcfg.yaml
     volumes:
       - ./config/gnbcfg.yaml:/ueransim/config/gnbcfg.yaml
-      - ./config/uecfg.yaml:/ueransim/config/uecfg.yaml
     cap_add:
       - NET_ADMIN
     devices:
@@ -318,13 +317,13 @@ services:
       - free5gc-amf
       - free5gc-upf
 
-  n3iwue:
-    container_name: n3iwue
+  ue:
+    container_name: ue
     build:
-      context: ./n3iwue
-    command: sleep infinity
+      context: ./ueransim
+    command: ./nr-ue -c ./config/uecfg.yaml
     volumes:
-      - ./config/n3uecfg.yaml:/n3iwue/config/n3ue.yaml
+      - ./config/uecfg.yaml:/ueransim/config/uecfg.yaml
     cap_add:
       - NET_ADMIN
     devices:
@@ -332,9 +331,29 @@ services:
     networks:
       privnet:
         aliases:
-          - n3ue.free5gc.org
+          - ue.free5gc.org
     depends_on:
-      - free5gc-n3iwf
+      - free5gc-amf
+      - free5gc-upf
+      - gnb
+
+  # n3iwue:
+  #   container_name: n3iwue
+  #   build:
+  #     context: ./n3iwue
+  #   command: sleep infinity
+  #   volumes:
+  #     - ./config/n3uecfg.yaml:/n3iwue/config/n3ue.yaml
+  #   cap_add:
+  #     - NET_ADMIN
+  #   devices:
+  #     - "/dev/net/tun"
+  #   networks:
+  #     privnet:
+  #       aliases:
+  #         - n3ue.free5gc.org
+  #   depends_on:
+  #     - free5gc-n3iwf
 
 networks:
   privnet:
