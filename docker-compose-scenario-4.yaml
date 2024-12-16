@@ -1,7 +1,6 @@
-# Scenario 1:
-# 1 rgnb
-# 1 gnb
-# 1 UE
+# Scenario 4:
+# 4 * rgnb - square architecture
+# 1 * UE
 
 services:
   free5gc-upf:
@@ -257,14 +256,14 @@ services:
       - db
       - free5gc-nrf
 
-  rgnb:
-    container_name: rgnb
+  rgnb1:
+    container_name: rgnb1
     build:
       context: ./../.
       dockerfile: ./free5gc-compose-5G-relays/rgnb/Dockerfile
-    command: ./nr-rgnb -c ./config/scenario-1/rgnb-cfg.yaml
+    command: ./nr-rgnb -c ./config/scenario-3/rgnb1-cfg.yaml
     volumes:
-      - ./config/scenario-1/rgnb-cfg.yaml:/ueransim-5g-relays/config/scenario-1/rgnb-cfg.yaml
+      - ./config/scenario-3/rgnb1-cfg.yaml:/ueransim-5g-relays/config/scenario-3/rgnb1-cfg.yaml
     cap_add:
       - NET_ADMIN
     devices:
@@ -272,19 +271,22 @@ services:
     networks:
       privnet:
         aliases:
-          - rgnb.free5gc.org
+          - rgnb1.free5gc.org
     depends_on:
       - free5gc-amf
       - free5gc-upf
-      - gnb
+      - rgnb2
+      - rgnb3
+      - rgnb4
 
-  gnb:
-    container_name: gnb
+  rgnb2:
+    container_name: rgnb2
     build:
-      context: ./ueransim
-    command: ./nr-gnb -c ./config/gnbcfg.yaml
+      context: ./../.
+      dockerfile: ./free5gc-compose-5G-relays/rgnb/Dockerfile
+    command: ./nr-rgnb -c ./config/scenario-3/rgnb2-cfg.yaml
     volumes:
-      - ./config/scenario-1/gnbcfg.yaml:/ueransim/config/gnbcfg.yaml
+      - ./config/scenario-3/rgnb2-cfg.yaml:/ueransim-5g-relays/config/scenario-3/rgnb2-cfg.yaml
     cap_add:
       - NET_ADMIN
     devices:
@@ -292,18 +294,60 @@ services:
     networks:
       privnet:
         aliases:
-          - gnb.free5gc.org
+          - rgnb2.free5gc.org
+    depends_on:
+      - free5gc-amf
+      - free5gc-upf
+      - rgnb4
+
+  rgnb3:
+    container_name: rgnb3
+    build:
+      context: ./../.
+      dockerfile: ./free5gc-compose-5G-relays/rgnb/Dockerfile
+    command: ./nr-rgnb -c ./config/scenario-3/rgnb3-cfg.yaml
+    volumes:
+      - ./config/scenario-3/rgnb3-cfg.yaml:/ueransim-5g-relays/config/scenario-3/rgnb3-cfg.yaml
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - "/dev/net/tun"
+    networks:
+      privnet:
+        aliases:
+          - rgnb3.free5gc.org
+    depends_on:
+      - free5gc-amf
+      - free5gc-upf
+      - rgnb4
+
+  rgnb4:
+    container_name: rgnb4
+    build:
+      context: ./../.
+      dockerfile: ./free5gc-compose-5G-relays/rgnb/Dockerfile
+    command: ./nr-rgnb -c ./config/scenario-3/rgnb4-cfg.yaml
+    volumes:
+      - ./config/scenario-3/rgnb4-cfg.yaml:/ueransim-5g-relays/config/scenario-3/rgnb4-cfg.yaml
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - "/dev/net/tun"
+    networks:
+      privnet:
+        aliases:
+          - rgnb4.free5gc.org
     depends_on:
       - free5gc-amf
       - free5gc-upf
 
-  ue:
-    container_name: ue
+  ue1:
+    container_name: ue1
     build:
       context: ./ueransim
-    command: ./nr-ue -c ./config/uecfg.yaml
+    command: ./nr-ue -c ./config/scenario-3/ue1-cfg.yaml
     volumes:
-      - ./config/scenario-1/uecfg.yaml:/ueransim/config/uecfg.yaml
+      - ./config/scenario-3/ue1-cfg.yaml:/ueransim/config/scenario-3/ue1-cfg.yaml
       - ./config/ping-experiment-2.sh:/ueransim/config/ping-experiment-2.sh
     cap_add:
       - NET_ADMIN
@@ -312,12 +356,14 @@ services:
     networks:
       privnet:
         aliases:
-          - ue.free5gc.org
+          - ue1.free5gc.org
     depends_on:
       - free5gc-amf
       - free5gc-upf
-      - rgnb
-      - gnb
+      - rgnb1
+      - rgnb2
+      - rgnb3
+      - rgnb4
 
 networks:
   privnet:

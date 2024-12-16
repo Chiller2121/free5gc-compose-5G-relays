@@ -8,13 +8,24 @@ ARG CACHEBUST=1
 LABEL build_version=${CACHEBUST}
 
 # Install dependencies + my own version of UERANSIM
+# RUN apt-get update \
+#     && apt-get install libsctp-dev lksctp-tools iproute2 -y \
+#     && wget https://github.com/Kitware/CMake/releases/download/v3.22.1/cmake-3.22.1-linux-x86_64.sh -O cmake_installer.sh \
+#     && chmod +x cmake_installer.sh \
+#     && ./cmake_installer.sh --skip-license \
+#     && git clone -b master -j `nproc` https://github.com/Chiller2121/UERANSIM-5g-relays \
+#     && cd ./UERANSIM-5g-relays \
+#     && make
+
 RUN apt-get update \
     && apt-get install libsctp-dev lksctp-tools iproute2 -y \
     && wget https://github.com/Kitware/CMake/releases/download/v3.22.1/cmake-3.22.1-linux-x86_64.sh -O cmake_installer.sh \
     && chmod +x cmake_installer.sh \
-    && ./cmake_installer.sh --skip-license \
-    && git clone -b master -j `nproc` https://github.com/Chiller2121/UERANSIM-5g-relays \
-    && cd ./UERANSIM-5g-relays \
+    && ./cmake_installer.sh --skip-license
+# Copy the local UERANSIM directory into the Docker image
+COPY /UERANSIM-5g-relays/ /UERANSIM-5g-relays
+# Build UERANSIM
+RUN cd /UERANSIM-5g-relays \
     && make
 
 FROM bitnami/minideb:bullseye

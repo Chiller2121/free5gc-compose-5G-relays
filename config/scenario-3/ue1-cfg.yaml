@@ -20,7 +20,7 @@ imeiSv: "4370816125816151"
 
 # List of gNB IP addresses for Radio Link Simulation
 gnbSearchList:
-  - rgnb.free5gc.org
+  - rgnb1.free5gc.org
 
 # UAC Access Identities Configuration
 uacAic:
@@ -69,9 +69,9 @@ integrity:
 
 # Supported encryption algorithms by this UE
 ciphering:
-  EA1: true
-  EA2: true
-  EA3: true
+  EA1: false
+  EA2: false
+  EA3: false
 
 # Integrity protection maximum data rate for user plane
 integrityMaxRate:
